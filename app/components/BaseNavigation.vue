@@ -1,12 +1,12 @@
 <template>
-    <div class="h-[12dvh] sticky top-0 left-0 bg-white z-50">
+    <div class="h-[12dvh] sticky top-0 left-0 bg-white z-50 px-5 md:px-10 xl:px-0">
         <nav class="h-full flex items-center justify-between lg:justify-center gap-x-10">
             <ul class="hidden lg:flex items-center gap-x-5 text-lg text-black">
                 <li>
-                    <NuxtLink to="/brands" class="py-1 px-3 rounded hover:text-blueberry">Tyres Brand</NuxtLink>
+                    <NuxtLink to="/brands" class="py-1 px-3 rounded hover:text-blueberry">Tires Brand</NuxtLink>
                 </li>
                 <li>
-                    <NuxtLink to="/tires" class="py-1 px-3 rounded hover:text-blueberry">Tyres</NuxtLink>
+                    <NuxtLink to="/tires" class="py-1 px-3 rounded hover:text-blueberry">Tires</NuxtLink>
                 </li>
                 <li>
                     <NuxtLink to="/" class="py-1 px-3 rounded hover:text-blueberry">Home</NuxtLink>
