@@ -1,9 +1,10 @@
 import { defineStore } from "pinia";
-import { getDocs, collection } from 'firebase/firestore'
+import { getDocs, collection, doc, getDoc } from 'firebase/firestore'
 
 export const useTiresSTore = defineStore('tireStore', {
     state: () => ({
-        tires: []
+        tires: [],
+        tireDetails: null,
     }),
     actions: {
         async getTires() {
@@ -22,6 +23,20 @@ export const useTiresSTore = defineStore('tireStore', {
             } catch (error) {
                 console.log(error)
             }
-        }
+        },
+        async getTireDetails(tireId) {
+            this.tireDetails = null
+            const { $db } = useNuxtApp()
+            const tireReference = doc($db, 'Tires', tireId)
+            try {
+                const snapshot = await getDoc(tireReference)
+                
+                if(snapshot.exists()) return this.tireDetails = snapshot.data()
+
+                return 'No data found'
+            } catch (error) {
+                console.log(error)
+            }
+        },
     }
 })

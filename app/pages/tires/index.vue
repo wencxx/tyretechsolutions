@@ -4,7 +4,7 @@
         <!-- search bar -->
         <div class="flex justify-end">
             <div class="flex items-center border w-full lg:w-1/4 py-1 px-2 rounded focus-within:outline focus-within:outline-2 focus-within:outline-blueberry">
-                <input type="text" class="focus:outline-none w-full">
+                <input type="text" class="focus:outline-none w-full" v-model="searchQuery">
                 <Icon name="uil:search" class=" text-black text-2xl" />
             </div>
         </div>
@@ -27,13 +27,9 @@
                             <Icon name="weui:arrow-filled" class="text-2xl rotate-90 duration-200" :class="{ '!-rotate-90': openedFilter.includes('Brands') }" />
                         </button>
                         <div v-if="openedFilter.includes('Brands')" class="pl-2 space-y-1 border-b pb-2">
-                            <div class="flex items-center gap-x-2">
-                                <input type="checkbox">
-                                <span class="text-sm">Goodyear</span>
-                            </div>
-                            <div class="flex items-center gap-x-2">
-                                <input type="checkbox">
-                                <span class="text-sm">Goodrich</span>
+                            <div v-for="brand in brands" :key="brand" class="flex items-center gap-x-2">
+                                <input :id="brand" type="checkbox" :value="brand" v-model="brandFilter">
+                                <label :for="brand" class="text-sm capitalize">{{ brand }} <span>({{ countBrand(brand) }})</span></label>
                             </div>
                         </div>
                     </div>
@@ -43,13 +39,9 @@
                             <Icon name="weui:arrow-filled" class="text-2xl rotate-90 duration-200" :class="{ '!-rotate-90': openedFilter.includes('tireSize') }" />
                         </button>
                         <div v-if="openedFilter.includes('tireSize')" class="pl-2 space-y-1 border-b pb-2">
-                            <div class="flex items-center gap-x-2">
-                                <input type="checkbox">
-                                <span class="text-sm">145 R12</span>
-                            </div>
-                            <div class="flex items-center gap-x-2">
-                                <input type="checkbox">
-                                <span class="text-sm">155 R12</span>
+                            <div v-for="[key, values] in Object.entries(getTireSizes())" :key="key" class="flex items-center gap-x-2">
+                                <input :id="key" type="checkbox" :value="key" v-model="sizeFilter">
+                                <lable :for="key" class="text-sm">{{ key }} ({{ values }})</lable>
                             </div>
                         </div>
                     </div>
@@ -59,13 +51,9 @@
                             <Icon name="weui:arrow-filled" class="text-2xl rotate-90 duration-200" :class="{ '!-rotate-90': openedFilter.includes('Origins') }" />
                         </button>
                         <div v-if="openedFilter.includes('Origins')" class="pl-2 space-y-1 border-b pb-2">
-                            <div class="flex items-center gap-x-2">
-                                <input type="checkbox">
-                                <span class="text-sm">Korea</span>
-                            </div>
-                            <div class="flex items-center gap-x-2">
-                                <input type="checkbox">
-                                <span class="text-sm">Indonesia</span>
+                            <div v-for="[key, values] in Object.entries(getTireOrigin())" :key="key" class="flex items-center gap-x-2">
+                                <input :id="key" type="checkbox" :value="key" v-model="originFilter">
+                                <label :for="key" class="text-sm">{{ key }} ({{ values }})</label>
                             </div>
                         </div>
                     </div>
@@ -75,36 +63,37 @@
                             <Icon name="weui:arrow-filled" class="text-2xl rotate-90 duration-200" :class="{ '!-rotate-90': openedFilter.includes('Warranty') }" />
                         </button>
                         <div v-if="openedFilter.includes('Warranty')" class="pl-2 space-y-1 border-b pb-2">
-                            <div class="flex items-center gap-x-2">
-                                <input type="checkbox">
-                                <span class="text-sm">2years warranty</span>
-                            </div>
-                            <div class="flex items-center gap-x-2">
-                                <input type="checkbox">
-                                <span class="text-sm">5years warranty</span>
+                            <div v-for="[key, values] in Object.entries(getTireWarranty())" :key="key" class="flex items-center gap-x-2">
+                                <input :id="key" type="checkbox" :value="key" v-model="warrantyFilter">
+                                <label :for="key" class="text-sm">{{ key }} ({{ values }})</label>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- products -->
-            <div v-if="!loading" class="w-full lg:w-10/12 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-                <div v-for="tire in tires" :key="tire.id" class="border rounded-md hover:shadow-md cursor-pointer p-5 space-y-5">
-                    <NuxtImg src="/tires/DURATRAC-RT_17_25.png" alt="tire" class="w-full" format="webp" densities="x1" />
-                    <div class="flex flex-col gap-y-3">
-                        <div>
-                            <NuxtImg :src="`/brands/${tire.brand}.png`" format="webp" width="100px" class="rounded-sm mx-auto" />
-                            <h2 class="text-center font-semibold uppercase tracking-wide line-clamp-1">{{ tire.name }}</h2>
-                        </div>
-                        <p class="text-gray-500 text-center text-sm line-clamp-3">{{ tire.description }}</p>
-                        <div class="flex justify-end">
-                            <NuxtLink :to="`/tires/${1}`" class="text-sm bg-blueberry text-white px-3 rounded py-1 hover:bg-blue-700">More Details</NuxtLink>
+            <div v-if="!loading" class="w-full lg:w-10/12">
+                <div v-if="filteredTires.length" class="w-full grid grid-cols-2 lg:grid-cols-3 gap-5">
+                    <div v-for="tire in filteredTires                                                                                                                                                                                                                                             " :key="tire.id" class="border rounded-md hover:shadow-md cursor-pointer p-5 space-y-5">
+                        <NuxtImg src="/tires/DURATRAC-RT_17_25.png" alt="tire" class="w-full" format="webp" densities="x1" />
+                        <div class="flex flex-col gap-y-3">
+                            <div>
+                                <NuxtImg :src="`/brands/${tire.brand}.png`" format="webp" width="100px" class="rounded-sm mx-auto" />
+                                <h2 class="text-center font-semibold uppercase tracking-wide line-clamp-1">{{ tire.name }}</h2>
+                            </div>
+                            <p class="text-gray-500 text-center text-sm line-clamp-3">{{ tire.description }}</p>
+                            <div class="flex justify-end">
+                                <NuxtLink :to="`/tires/${tire.id}`" class="text-sm bg-blueberry text-white px-3 rounded py-1 hover:bg-blue-700">More Details</NuxtLink>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div v-else class="">
+                    <h1 class="text-center text-lg uppercase mt-10 font-semibold tracking-wide">No results</h1>
+                </div>
             </div>
-            <div v-else class="w-full lg:w-10/12 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-                <div v-for="skeleton in 5" :key="skeleton" class="border rounded-md hover:shadow-md cursor-pointer p-5 space-y-5">
+            <div v-else class="w-full lg:w-10/12 grid grid-cols-2 lg:grid-cols-3 gap-5">
+                <div v-for="skeleton in 6" :key="skeleton" class="border rounded-md hover:shadow-md cursor-pointer p-5 space-y-5">
                     <div class="w-full aspect-square animate-pulse rounded bg-gray-200"></div>
                     <div class="flex flex-col gap-y-3">
                         <div class="space-y-1">
@@ -139,6 +128,8 @@ const openFilter = (filter) => {
     }
 }
 
+const brands = ['goodyear', 'bridgestone', 'michelin', 'pirelli', 'kumho', 'nexen', 'roadstone', 'otani', 'armstrong', 'dunlop', 'yokohama', 'maxxis', 'continental', 'tracmax', 'falken', 'cooper' ]
+
 const tires = computed(() => tireStore.tires)
 
 onMounted(() => {
@@ -156,5 +147,95 @@ const getTires = async () => {
     } finally {
         loading.value = false
     }
+}
+
+const searchQuery = ref('');
+const brandFilter = ref([]);
+const sizeFilter = ref([]);
+const originFilter = ref([]);
+const warrantyFilter = ref([]);
+
+const filteredTires = computed(() => {
+    const searchQueryLower = searchQuery.value.toLowerCase();
+
+    if (!searchQuery.value && brandFilter.value.length === 0 && sizeFilter.value.length === 0 && originFilter.value.length === 0 && warrantyFilter.value.length === 0) {
+        return tires.value;
+    }
+
+    return tires.value.filter(tire => {
+        const matchesSearchQuery = searchQuery.value
+            ? (tire.size?.toLowerCase().includes(searchQueryLower) ||
+               tire.brand?.toLowerCase().includes(searchQueryLower) ||
+               tire.name?.toLowerCase().includes(searchQueryLower) ||
+               tire.origin?.toLowerCase().includes(searchQueryLower) ||
+               tire.warranty?.toLowerCase().includes(searchQueryLower))
+            : true;
+
+        const matchesBrandFilter = brandFilter.value.length > 0
+            ? brandFilter.value.includes(tire.brand?.toLowerCase())
+            : true;
+
+        const matchesSizeFilter = sizeFilter.value.length > 0
+            ? sizeFilter.value.includes(tire.size)
+            : true;
+
+        const matchesOriginFilter = originFilter.value.length > 0
+            ? originFilter.value.includes(tire.origin)
+            : true;
+
+        const matchesWarrantyFilter = warrantyFilter.value.length > 0
+            ? warrantyFilter.value.includes(tire.warranty)
+            : true;
+
+        return matchesSearchQuery && matchesBrandFilter && matchesSizeFilter && matchesOriginFilter && matchesWarrantyFilter;
+    });
+});
+
+const countBrand = (brand) => {
+    const brandLists = tires.value.filter(tire => tire.brand === brand)
+
+    return brandLists.length
+}
+
+const getTireSizes = () => {
+    let tireSizes = {}
+
+    for(let tire of tires.value){
+        if(tireSizes[tire.size]){
+            tireSizes[tire.size] ++
+        }else{
+            tireSizes[tire.size] = 1
+        }
+    }
+
+    return tireSizes
+}
+
+const getTireOrigin = () => {
+     let tireOrigins = {}
+
+     for(let tire of tires.value){
+        if(tireOrigins[tire.origin]){
+            tireOrigins[tire.origin]++
+        }else{
+            tireOrigins[tire.origin] = 1
+        }
+     }
+
+     return tireOrigins
+}
+
+const getTireWarranty = () => {
+    let tireWarranty = {}
+
+    for(let tire of tires.value){
+        if(tireWarranty[tire.warranty]){
+            tireWarranty[tire.warranty]++
+        }else{
+            tireWarranty[tire.warranty] = 1
+        }
+    }
+    
+    return tireWarranty
 }
 </script>
