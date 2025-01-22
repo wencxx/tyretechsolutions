@@ -23,7 +23,7 @@
                     <NuxtLink to="/" class="py-1 px-3 rounded hover:text-blueberry">About Us</NuxtLink>
                 </li>
                 <li>
-                    <NuxtLink to="/" class="py-1 px-3 rounded hover:text-blueberry">Contact Us</NuxtLink>
+                    <NuxtLink to="/contact" class="py-1 px-3 rounded hover:text-blueberry">Contact Us</NuxtLink>
                 </li>
             </ul>
             <Icon v-if="!openSideBar" name="uil:align-center-alt" class="block lg:hidden text-black text-4xl cursor-pointer" @click="openSideBar = true" />
@@ -45,7 +45,7 @@
                     <NuxtLink to="/" class="py-1 px-5 rounded hover:bg-gray-300 w-full flex text-xl">Batteries</NuxtLink>
                 </li>
                 <li>
-                    <NuxtLink to="/" class="py-1 px-5 rounded hover:bg-gray-300 w-full flex text-xl">Contact Us</NuxtLink>
+                    <NuxtLink to="/contact" class="py-1 px-5 rounded hover:bg-gray-300 w-full flex text-xl">Contact Us</NuxtLink>
                 </li>
                 <li>
                     <NuxtLink to="/" class="py-1 px-5 rounded hover:bg-gray-300 w-full flex text-xl">About Us</NuxtLink>

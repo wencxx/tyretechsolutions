@@ -74,7 +74,7 @@
             <!-- products -->
             <div v-if="!loading" class="w-full lg:w-10/12">
                 <div v-if="filteredTires.length" class="w-full grid grid-cols-2 lg:grid-cols-3 gap-5">
-                    <div v-for="tire in filteredTires                                                                                                                                                                                                                                             " :key="tire.id" class="border rounded-md hover:shadow-md cursor-pointer p-5 space-y-5">
+                    <div v-for="tire in filteredTires" :key="tire.id" class="border rounded-md hover:shadow-md cursor-pointer p-5 space-y-5">
                         <NuxtImg src="/tires/DURATRAC-RT_17_25.png" alt="tire" class="w-full" format="webp" densities="x1" />
                         <div class="flex flex-col gap-y-3">
                             <div>
@@ -87,6 +87,9 @@
                             </div>
                         </div>
                     </div>
+
+                    <button v-if="itemsShowing < filteredTires" class="mx-auto w-fit bg-blueberry rounded-full py-1 px-3 text-white hover:bg-blue-700 col-span-2 lg:col-span-3" @click="showMore">Show more</button>
+                    <button v-else class="mx-auto w-fit bg-blueberry rounded-full py-1 px-3 text-white hover:bg-blue-700 col-span-2 lg:col-span-3" @click="showLess">Show Less</button>
                 </div>
                 <div v-else class="">
                     <h1 class="text-center text-lg uppercase mt-10 font-semibold tracking-wide">No results</h1>
@@ -155,14 +158,16 @@ const sizeFilter = ref([]);
 const originFilter = ref([]);
 const warrantyFilter = ref([]);
 
+const itemsShowing = ref(6)
+
 const filteredTires = computed(() => {
     const searchQueryLower = searchQuery.value.toLowerCase();
 
     if (!searchQuery.value && brandFilter.value.length === 0 && sizeFilter.value.length === 0 && originFilter.value.length === 0 && warrantyFilter.value.length === 0) {
-        return tires.value;
+        return tires.value.slice(0, itemsShowing.value);
     }
 
-    return tires.value.filter(tire => {
+    const filteredLists =  tires.value.filter(tire => {
         const matchesSearchQuery = searchQuery.value
             ? (tire.size?.toLowerCase().includes(searchQueryLower) ||
                tire.brand?.toLowerCase().includes(searchQueryLower) ||
@@ -189,7 +194,18 @@ const filteredTires = computed(() => {
 
         return matchesSearchQuery && matchesBrandFilter && matchesSizeFilter && matchesOriginFilter && matchesWarrantyFilter;
     });
+
+    return filteredLists.slice(0, itemsShowing.value)
 });
+
+
+const showMore = () => {
+    itemsShowing.value += 6
+}
+
+const showLess = () => {
+    itemsShowing.value -= 6
+}
 
 const countBrand = (brand) => {
     const brandLists = tires.value.filter(tire => tire.brand === brand)
