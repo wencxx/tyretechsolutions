@@ -1,6 +1,6 @@
 <template>
     <div class="py-10 space-y-10 w-full max-w-7xl mx-auto px-5 md:px-10 xl:px-0 min-h-[88dvh]">
-        <h1 class="font-bold text-3xl uppercase tracking-wide text-center">Check out our tires</h1>
+        <h1 class="font-bold text-3xl uppercase tracking-wide text-center">Check out our batteries</h1>
         <!-- search bar -->
         <div class="flex justify-end">
             <div class="flex items-center border w-full lg:w-1/4 py-1 px-2 rounded focus-within:outline focus-within:outline-2 focus-within:outline-blueberry">
@@ -34,36 +34,12 @@
                         </div>
                     </div>
                     <div>
-                        <button class="flex items-center justify-between w-full" @click="openFilter('tireSize')">
-                            <span class="text-lg">Tire Size</span>
-                            <Icon name="weui:arrow-filled" class="text-2xl rotate-90 duration-200" :class="{ '!-rotate-90': openedFilter.includes('tireSize') }" />
-                        </button>
-                        <div v-if="openedFilter.includes('tireSize')" class="pl-2 space-y-1 border-b pb-2">
-                            <div v-for="[key, values] in Object.entries(getTireSizes())" :key="key" class="flex items-center gap-x-2">
-                                <input :id="key" type="checkbox" :value="key" v-model="sizeFilter">
-                                <lable :for="key" class="text-sm">{{ key }} ({{ values }})</lable>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <button class="flex items-center justify-between w-full" @click="openFilter('Origins')">
-                            <span class="text-lg">Origin</span>
-                            <Icon name="weui:arrow-filled" class="text-2xl rotate-90 duration-200" :class="{ '!-rotate-90': openedFilter.includes('Origins') }" />
-                        </button>
-                        <div v-if="openedFilter.includes('Origins')" class="pl-2 space-y-1 border-b pb-2">
-                            <div v-for="[key, values] in Object.entries(getTireOrigin())" :key="key" class="flex items-center gap-x-2">
-                                <input :id="key" type="checkbox" :value="key" v-model="originFilter">
-                                <label :for="key" class="text-sm">{{ key }} ({{ values }})</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
                         <button class="flex items-center justify-between w-full" @click="openFilter('Warranty')">
                             <span class="text-lg">Warranty</span>
                             <Icon name="weui:arrow-filled" class="text-2xl rotate-90 duration-200" :class="{ '!-rotate-90': openedFilter.includes('Warranty') }" />
                         </button>
                         <div v-if="openedFilter.includes('Warranty')" class="pl-2 space-y-1 border-b pb-2">
-                            <div v-for="[key, values] in Object.entries(getTireWarranty())" :key="key" class="flex items-center gap-x-2">
+                            <div v-for="[key, values] in Object.entries(getBatteryWarranty())" :key="key" class="flex items-center gap-x-2">
                                 <input :id="key" type="checkbox" :value="key" v-model="warrantyFilter">
                                 <label :for="key" class="text-sm">{{ key }} ({{ values }})</label>
                             </div>
@@ -73,22 +49,22 @@
             </div>
             <!-- products -->
             <div v-if="!loading" class="w-full lg:w-10/12">
-                <div v-if="filteredTires.length" class="w-full grid grid-cols-2 lg:grid-cols-3 gap-5">
-                    <div v-for="tire in filteredTires" :key="tire.id" class="border rounded-md hover:shadow-md cursor-pointer p-5 space-y-5">
-                        <NuxtImg :src="tire.imageUrl" alt="tire" class="w-full" format="webp" densities="x1" />
+                <div v-if="filteredBatteries.length" class="w-full grid grid-cols-2 lg:grid-cols-3 gap-5">
+                    <div v-for="battery in filteredBatteries" :key="battery.id" class="border rounded-md hover:shadow-md cursor-pointer p-5 space-y-5">
+                        <NuxtImg :src="battery.imageUrl" alt="battery" class="w-full" format="webp" densities="x1" />
                         <div class="flex flex-col gap-y-3">
                             <div>
-                                <NuxtImg :src="`/brands/${tire.brand}.png`" format="webp" width="100px" class="rounded-sm mx-auto" />
-                                <h2 class="text-center font-semibold uppercase tracking-wide line-clamp-1">{{ tire.name }}</h2>
+                                <NuxtImg :src="`/brands/${battery.brand}.png`" format="webp" width="100px" class="rounded-sm mx-auto" />
+                                <h2 class="text-center font-semibold uppercase tracking-wide line-clamp-1">{{ battery.name }}</h2>
                             </div>
-                            <p class="text-gray-500 text-center text-sm line-clamp-3">{{ tire.description }}</p>
+                            <p class="text-gray-500 text-center text-sm line-clamp-3">{{ battery.description }}</p>
                             <div class="flex justify-end">
-                                <NuxtLink :to="`/tires/${tire.id}`" class="text-sm bg-blueberry text-white px-3 rounded py-1 hover:bg-blue-700">More Details</NuxtLink>
+                                <NuxtLink :to="`/batteries/${battery.id}`" class="text-sm bg-blueberry text-white px-3 rounded py-1 hover:bg-blue-700">More Details</NuxtLink>
                             </div>
                         </div>
                     </div>
 
-                    <button v-if="itemsShowing < filteredTires" class="mx-auto w-fit bg-blueberry rounded-full py-1 px-3 text-white hover:bg-blue-700 col-span-2 lg:col-span-3" @click="showMore">Show more</button>
+                    <button v-if="itemsShowing < filteredBatteries" class="mx-auto w-fit bg-blueberry rounded-full py-1 px-3 text-white hover:bg-blue-700 col-span-2 lg:col-span-3" @click="showMore">Show more</button>
                     <button v-else class="mx-auto w-fit bg-blueberry rounded-full py-1 px-3 text-white hover:bg-blue-700 col-span-2 lg:col-span-3" @click="showLess">Show Less</button>
                 </div>
                 <div v-else class="">
@@ -115,9 +91,9 @@
 </template>
 
 <script setup>
-import { useTiresSTore } from '../../stores/tires'
+import { useBatteriesStore } from '../../stores/batteries'
 
-const tireStore = useTiresSTore()
+const batteryStore = useBatteriesStore()
 
 // open filter function
 const openedFilter = ref([]) 
@@ -131,20 +107,20 @@ const openFilter = (filter) => {
     }
 }
 
-const brands = ['goodyear', 'bridgestone', 'michelin', 'pirelli', 'kumho', 'nexen', 'roadstone', 'otani', 'armstrong', 'dunlop', 'yokohama', 'maxxis', 'continental', 'tracmax', 'falken', 'cooper' ]
+const brands = ['amaron', 'ac delco', 'solite', 'varta']
 
-const tires = computed(() => tireStore.tires)
+const batteries = computed(() => batteryStore.batteries)
 
 onMounted(() => {
-    getTires()
+    getBatteries()
 })
 
 const loading = ref(false)
 
-const getTires = async () => {
+const getBatteries = async () => {
     try {
         loading.value = true
-        await tireStore.getTires()
+        await batteryStore.getBatteries()
     } catch (error) {
         console.log(error)
     } finally {
@@ -154,45 +130,33 @@ const getTires = async () => {
 
 const searchQuery = ref('');
 const brandFilter = ref([]);
-const sizeFilter = ref([]);
-const originFilter = ref([]);
 const warrantyFilter = ref([]);
 
 const itemsShowing = ref(6)
 
-const filteredTires = computed(() => {
+const filteredBatteries = computed(() => {
     const searchQueryLower = searchQuery.value.toLowerCase();
 
-    if (!searchQuery.value && brandFilter.value.length === 0 && sizeFilter.value.length === 0 && originFilter.value.length === 0 && warrantyFilter.value.length === 0) {
-        return tires.value.slice(0, itemsShowing.value);
+    if (!searchQuery.value && brandFilter.value.length === 0 && warrantyFilter.value.length === 0) {
+        return batteries.value.slice(0, itemsShowing.value);
     }
 
-    const filteredLists =  tires.value.filter(tire => {
+    const filteredLists =  batteries.value.filter(battery => {
         const matchesSearchQuery = searchQuery.value
-            ? (tire.size?.toLowerCase().includes(searchQueryLower) ||
-               tire.brand?.toLowerCase().includes(searchQueryLower) ||
-               tire.name?.toLowerCase().includes(searchQueryLower) ||
-               tire.origin?.toLowerCase().includes(searchQueryLower) ||
-               tire.warranty?.toLowerCase().includes(searchQueryLower))
+            ? (battery.brand?.toLowerCase().includes(searchQueryLower) ||
+               battery.name?.toLowerCase().includes(searchQueryLower) ||
+               battery.warranty?.toLowerCase().includes(searchQueryLower))
             : true;
 
         const matchesBrandFilter = brandFilter.value.length > 0
-            ? brandFilter.value.includes(tire.brand?.toLowerCase())
-            : true;
-
-        const matchesSizeFilter = sizeFilter.value.length > 0
-            ? sizeFilter.value.includes(tire.size)
-            : true;
-
-        const matchesOriginFilter = originFilter.value.length > 0
-            ? originFilter.value.includes(tire.origin)
+            ? brandFilter.value.includes(battery.brand?.toLowerCase())
             : true;
 
         const matchesWarrantyFilter = warrantyFilter.value.length > 0
-            ? warrantyFilter.value.includes(tire.warranty)
+            ? warrantyFilter.value.includes(battery.warranty)
             : true;
 
-        return matchesSearchQuery && matchesBrandFilter && matchesSizeFilter && matchesOriginFilter && matchesWarrantyFilter;
+        return matchesSearchQuery && matchesBrandFilter && matchesWarrantyFilter;
     });
 
     return filteredLists.slice(0, itemsShowing.value)
@@ -208,50 +172,23 @@ const showLess = () => {
 }
 
 const countBrand = (brand) => {
-    const brandLists = tires.value.filter(tire => tire.brand === brand)
+    const brandLists = batteries.value.filter(battery => battery.brand === brand)
 
     return brandLists.length
 }
 
-const getTireSizes = () => {
-    let tireSizes = {}
 
-    for(let tire of tires.value){
-        if(tireSizes[tire.size]){
-            tireSizes[tire.size] ++
+const getBatteryWarranty = () => {
+    let batteryWarranty = {}
+
+    for(let battery of batteries.value){
+        if(batteryWarranty[battery.warranty]){
+            batteryWarranty[battery.warranty]++
         }else{
-            tireSizes[tire.size] = 1
-        }
-    }
-
-    return tireSizes
-}
-
-const getTireOrigin = () => {
-     let tireOrigins = {}
-
-     for(let tire of tires.value){
-        if(tireOrigins[tire.origin]){
-            tireOrigins[tire.origin]++
-        }else{
-            tireOrigins[tire.origin] = 1
-        }
-     }
-
-     return tireOrigins
-}
-
-const getTireWarranty = () => {
-    let tireWarranty = {}
-
-    for(let tire of tires.value){
-        if(tireWarranty[tire.warranty]){
-            tireWarranty[tire.warranty]++
-        }else{
-            tireWarranty[tire.warranty] = 1
+            batteryWarranty[battery.warranty] = 1
         }
     }
     
-    return tireWarranty
+    return batteryWarranty
 }
 </script>

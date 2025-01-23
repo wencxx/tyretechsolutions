@@ -3,13 +3,13 @@
         <nav class="h-full flex items-center justify-between lg:justify-center gap-x-10">
             <ul class="hidden lg:flex items-center gap-x-5 text-lg text-black">
                 <li>
+                    <NuxtLink to="/contact" class="py-1 px-3 rounded hover:text-blueberry">Contact Us</NuxtLink>
+                </li>
+                <li>
                     <NuxtLink to="/brands" class="py-1 px-3 rounded hover:text-blueberry">Tires Brand</NuxtLink>
                 </li>
                 <li>
                     <NuxtLink to="/tires" class="py-1 px-3 rounded hover:text-blueberry">Tires</NuxtLink>
-                </li>
-                <li>
-                    <NuxtLink to="/" class="py-1 px-3 rounded hover:text-blueberry">Home</NuxtLink>
                 </li>
             </ul>
             <NuxtLink to="/"  class="z-50">
@@ -17,13 +17,13 @@
             </NuxtLink>
             <ul class="hidden lg:flex items-center gap-x-5 text-lg text-black">
                 <li>
-                    <NuxtLink to="/" class="py-1 px-3 rounded hover:text-blueberry">Batteries</NuxtLink>
+                    <NuxtLink to="/" class="py-1 px-3 rounded hover:text-blueberry">Home</NuxtLink>
                 </li>
                 <li>
-                    <NuxtLink to="/" class="py-1 px-3 rounded hover:text-blueberry">About Us</NuxtLink>
+                    <NuxtLink to="/batteries" class="py-1 px-3 rounded hover:text-blueberry">Batteries</NuxtLink>
                 </li>
                 <li>
-                    <NuxtLink to="/contact" class="py-1 px-3 rounded hover:text-blueberry">Contact Us</NuxtLink>
+                    <NuxtLink to="/batteries-brands" class="py-1 px-3 rounded hover:text-blueberry">Batteries Brand</NuxtLink>
                 </li>
             </ul>
             <Icon v-if="!openSideBar" name="uil:align-center-alt" class="block lg:hidden text-black text-4xl cursor-pointer" @click="openSideBar = true" />
@@ -42,13 +42,13 @@
                     <NuxtLink to="/brands" class="py-1 px-5 rounded hover:bg-gray-300 w-full flex text-xl">Tire Brands</NuxtLink>
                 </li>
                 <li>
-                    <NuxtLink to="/" class="py-1 px-5 rounded hover:bg-gray-300 w-full flex text-xl">Batteries</NuxtLink>
+                    <NuxtLink to="/batteries" class="py-1 px-5 rounded hover:bg-gray-300 w-full flex text-xl">Batteries</NuxtLink>
+                </li>
+                <li>
+                    <NuxtLink to="/batteries-brands" class="py-1 px-5 rounded hover:bg-gray-300 w-full flex text-xl">Batteries Brand</NuxtLink>
                 </li>
                 <li>
                     <NuxtLink to="/contact" class="py-1 px-5 rounded hover:bg-gray-300 w-full flex text-xl">Contact Us</NuxtLink>
-                </li>
-                <li>
-                    <NuxtLink to="/" class="py-1 px-5 rounded hover:bg-gray-300 w-full flex text-xl">About Us</NuxtLink>
                 </li>
             </ul>
         </nav>
