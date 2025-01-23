@@ -99,7 +99,6 @@
                             </div>
                         </div>
                     </div>
-                    {{  }}
                     <button v-if="totalItems > filteredTires.length" class="mx-auto w-fit bg-blueberry rounded-full py-1 px-3 text-white hover:bg-blue-700 col-span-2 lg:col-span-3" @click="showMore">Show more</button>
                     <p v-else class="text-center col-span-3 uppercase font-semibold tracking-wide">End of lists</p>
                 </div>
@@ -128,6 +127,8 @@
 
 <script setup>
 import { useTiresSTore } from '../../stores/tires'
+
+const query = useRoute().query
 
 const tireStore = useTiresSTore()
 
@@ -166,7 +167,7 @@ const getTires = async () => {
 
 const searchQuery = ref('');
 const brandFilter = ref([]);
-const sizeFilter = ref([]);
+const sizeFilter = ref([query.size]);
 const originFilter = ref([]);
 const yearFilter = ref([]);
 const warrantyFilter = ref([]);
