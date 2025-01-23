@@ -6,33 +6,37 @@
         <div v-else class="lg:w-1/2 flex items-center justify-center">
             <div class="w-3/4 aspect-square animate-pulse rounded-md bg-gray-200"></div>
         </div>
-        <div v-if="tireDetails" class="lg:w-1/2 p-10 flex flex-col justify-center gap-y-10 bg-gray-100 rounded shadow">
-            <div class="space-y-3">
-                <h1 class="font-bold text-xl tracking-wide">{{ tireDetails?.name }}</h1>
-                <p class="text-lg text-gray-500">{{ tireDetails?.description }}</p>
+        <div v-if="tireDetails" class="lg:w-1/2 p-10 flex flex-col justify-center bg-gray-100 rounded shadow">
+            <NuxtImg :src="`/brands/${tireDetails.brand}.png`" format="webp" densities="x1" width="130px" />
+            <div class="space-y-3 mt-7 mb-3">
+                <h1 class="text-2xl tracking-wide uppercase">Product Information</h1>
             </div>
             <ul class="space-y-2">
-                <li class="text-xl font-semibold">Brand: <span class="font-normal text-gray-700 capitalize">{{ tireDetails?.brand }}</span></li>
-                <li class="text-xl font-semibold">Size: <span class="font-normal text-gray-700 capitalize">{{ tireDetails?.size }}</span></li>
-                <li class="text-xl font-semibold">Origin: <span class="font-normal text-gray-700 capitalize">{{ tireDetails?.origin }}</span></li>
-                <li class="text-xl font-semibold">Warranty: <span class="font-normal text-gray-700 capitalize">{{ tireDetails?.warranty }}</span></li>
+                <li v-if="tireDetails.name" class="text-xl font-semibold grid grid-cols-2 gap-x-5">Name: <span class="font-normal text-gray-700 capitalize">{{ tireDetails?.name }}</span></li>
+                <li v-if="tireDetails.size" class="text-xl font-semibold grid grid-cols-2 gap-x-5">Size: <span class="font-normal text-gray-700 capitalize">{{ tireDetails?.size }}</span></li>
+                <li v-if="tireDetails.speedIndex" class="text-xl font-semibold grid grid-cols-2 gap-x-5">Load / Speed Index: <span class="font-normal text-gray-700 capitalize">{{ tireDetails?.speedIndex }}</span></li>
+                <li v-if="tireDetails.origin" class="text-xl font-semibold grid grid-cols-2 gap-x-5">Origin: <span class="font-normal text-gray-700 capitalize">{{ tireDetails?.origin }}</span></li>
+                <li v-if="tireDetails.year" class="text-xl font-semibold grid grid-cols-2 gap-x-5">Manufacturer Year: <span class="font-normal text-gray-700 capitalize">{{ tireDetails?.year }}</span></li>
+                <li v-if="tireDetails.warranty" class="text-xl font-semibold grid grid-cols-2 gap-x-5">Warranty: <span class="font-normal text-gray-700 capitalize">{{ tireDetails?.warranty }}</span></li>
+                <li v-if="tireDetails.sku" class="text-xl font-semibold grid grid-cols-2 gap-x-5">SKU: <span class="font-normal text-gray-700 capitalize">{{ tireDetails?.sku }}</span></li>
             </ul>
-            <a href="https://wa.me/1234567890" target="_blank" class="w-fit mx-auto bg-blueberry text-white px-7 py-1 rounded-full text-xl hover:bg-blue-700">Inquire Now</a>
+            <a href="https://wa.me/1234567890" target="_blank" class="w-fit mx-auto bg-blueberry text-white px-7 py-1 rounded-full text-xl hover:bg-blue-700 mt-10">Inquire Now</a>
         </div>
-        <div v-else class="lg:w-1/2 p-10 flex flex-col justify-center gap-y-10 bg-gray-100 rounded shadow">
-            <div class="space-y-3">
-                <div class="w-3/4 h-9 bg-gray-200 animate-pulse rounded-md"></div>
+        <div v-else class="lg:w-1/2 p-10 flex flex-col justify-center gap-y-5 bg-gray-100 rounded shadow">
+            <div class="space-y-6">
+                <div class="w-1/4 h-9 bg-gray-200 animate-pulse rounded-md"></div>
                 <div class="space-y-0.5">
-                    <div class="w-full h-6 bg-gray-200 animate-pulse rounded-md"></div>
-                    <div class="w-full h-6 bg-gray-200 animate-pulse rounded-md"></div>
-                    <div class="w-full h-6 bg-gray-200 animate-pulse rounded-md"></div>
+                    <div class="w-1/2 h-10 bg-gray-200 animate-pulse rounded-md"></div>
                 </div>
             </div>
             <ul class="space-y-2">
-                <li class="text-xl font-semibold flex gap-x-2"><spann>Brand:</spann> <div class="w-1/2 h-7 bg-gray-200 animate-pulse rounded-md"></div></li>
-                <li class="text-xl font-semibold flex gap-x-2"><spann>Size:</spann> <div class="w-1/2 h-7 bg-gray-200 animate-pulse rounded-md"></div></li>
-                <li class="text-xl font-semibold flex gap-x-2"><spann>Origin:</spann> <div class="w-1/2 h-7 bg-gray-200 animate-pulse rounded-md"></div></li>
-                <li class="text-xl font-semibold flex gap-x-2"><spann>Warranty:</spann> <div class="w-1/2 h-7 bg-gray-200 animate-pulse rounded-md"></div></li>
+                <li class="text-xl font-semibold grid grid-cols-2 gap-x-5"><spann>Name:</spann> <div class="w-1/2 h-7 bg-gray-200 animate-pulse rounded-md"></div></li>
+                <li class="text-xl font-semibold grid grid-cols-2 gap-x-5"><spann>Size:</spann> <div class="w-1/2 h-7 bg-gray-200 animate-pulse rounded-md"></div></li>
+                <li class="text-xl font-semibold grid grid-cols-2 gap-x-5"><spann>Load / Speed Index:</spann> <div class="w-1/2 h-7 bg-gray-200 animate-pulse rounded-md"></div></li>
+                <li class="text-xl font-semibold grid grid-cols-2 gap-x-5"><spann>Origin:</spann> <div class="w-1/2 h-7 bg-gray-200 animate-pulse rounded-md"></div></li>
+                <li class="text-xl font-semibold grid grid-cols-2 gap-x-5"><spann>Manufacturer Year:</spann> <div class="w-1/2 h-7 bg-gray-200 animate-pulse rounded-md"></div></li>
+                <li class="text-xl font-semibold grid grid-cols-2 gap-x-5"><spann>Warranty:</spann> <div class="w-1/2 h-7 bg-gray-200 animate-pulse rounded-md"></div></li>
+                <li class="text-xl font-semibold grid grid-cols-2 gap-x-5"><spann>SKU:</spann> <div class="w-1/2 h-7 bg-gray-200 animate-pulse rounded-md"></div></li>
             </ul>
             <a v-if="tireDetails" href="https://wa.me/1234567890" target="_blank" class="w-fit mx-auto bg-blueberry text-white px-7 py-1 rounded-full text-xl hover:bg-blue-700">Inquire Now</a>
             <div class="h-10 w-1/3 mx-auto bg-gray-200 animate-pulse rounded-full"></div>

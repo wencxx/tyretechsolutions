@@ -55,7 +55,7 @@
         </div>
         <hr>
         <!-- customers feedback -->
-        <div class="h-fit p-10 w-full max-w-7xl mx-auto text-center space-y-10">
+        <!-- <div class="h-fit p-10 w-full max-w-7xl mx-auto text-center space-y-10">
             <h1 class="text-4xl  uppercase font-sans font-bold">What our customers <span class="text-blueberry">Says</span></h1>
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
                 <div class="border p-5 rounded shadow space-y-5 h-fit">
@@ -75,7 +75,7 @@
                     <h1 class="font-bold uppercase">Wency Baterna</h1>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 

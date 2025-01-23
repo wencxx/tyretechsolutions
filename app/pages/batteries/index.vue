@@ -51,21 +51,19 @@
             <div v-if="!loading" class="w-full lg:w-10/12">
                 <div v-if="filteredBatteries.length" class="w-full grid grid-cols-2 lg:grid-cols-3 gap-5">
                     <div v-for="battery in filteredBatteries" :key="battery.id" class="border rounded-md hover:shadow-md cursor-pointer p-5 space-y-5">
-                        <NuxtImg :src="battery.imageUrl" alt="battery" class="w-full" format="webp" densities="x1" />
-                        <div class="flex flex-col gap-y-3">
+                        <NuxtImg :src="battery.imageUrl" alt="battery" class="w-full aspect-square" format="webp" densities="x1" />
+                        <div class="flex flex-col gap-y-3 justify-between ">
                             <div>
                                 <NuxtImg :src="`/brands/${battery.brand}.png`" format="webp" width="100px" class="rounded-sm mx-auto" />
                                 <h2 class="text-center font-semibold uppercase tracking-wide line-clamp-1">{{ battery.name }}</h2>
                             </div>
-                            <p class="text-gray-500 text-center text-sm line-clamp-3">{{ battery.description }}</p>
                             <div class="flex justify-end">
                                 <NuxtLink :to="`/batteries/${battery.id}`" class="text-sm bg-blueberry text-white px-3 rounded py-1 hover:bg-blue-700">More Details</NuxtLink>
                             </div>
                         </div>
                     </div>
 
-                    <button v-if="itemsShowing < filteredBatteries" class="mx-auto w-fit bg-blueberry rounded-full py-1 px-3 text-white hover:bg-blue-700 col-span-2 lg:col-span-3" @click="showMore">Show more</button>
-                    <button v-else class="mx-auto w-fit bg-blueberry rounded-full py-1 px-3 text-white hover:bg-blue-700 col-span-2 lg:col-span-3" @click="showLess">Show Less</button>
+                    <button  v-if="totalItems > filteredBatteries.length" class="mx-auto w-fit bg-blueberry rounded-full py-1 px-3 text-white hover:bg-blue-700 col-span-2 lg:col-span-3" @click="showMore">Show more</button>
                 </div>
                 <div v-else class="">
                     <h1 class="text-center text-lg uppercase mt-10 font-semibold tracking-wide">No results</h1>
@@ -79,7 +77,6 @@
                             <div class="bg-gray-200 rounded animate-pulse w-1/2 h-8 mx-auto"></div>
                             <div class="bg-gray-200 rounded animate-pulse w-3/4 h-6 mx-auto"></div>
                         </div>
-                        <div class="bg-gray-200 rounded animate-pulse w-3/4 h-10 mx-auto"></div>
                         <div class="flex justify-end">
                             <div class="bg-gray-200 rounded animate-pulse w-1/3 h-8"></div>
                         </div>
@@ -133,11 +130,13 @@ const brandFilter = ref([]);
 const warrantyFilter = ref([]);
 
 const itemsShowing = ref(6)
+const totalItems = ref('')
 
 const filteredBatteries = computed(() => {
     const searchQueryLower = searchQuery.value.toLowerCase();
 
     if (!searchQuery.value && brandFilter.value.length === 0 && warrantyFilter.value.length === 0) {
+        totalItems.value = batteries.value.length
         return batteries.value.slice(0, itemsShowing.value);
     }
 
@@ -159,6 +158,7 @@ const filteredBatteries = computed(() => {
         return matchesSearchQuery && matchesBrandFilter && matchesWarrantyFilter;
     });
 
+    totalItems.value = filteredLists.length
     return filteredLists.slice(0, itemsShowing.value)
 });
 

@@ -58,6 +58,18 @@
                         </div>
                     </div>
                     <div>
+                        <button class="flex items-center justify-between w-full" @click="openFilter('Year')">
+                            <span class="text-lg">Year</span>
+                            <Icon name="weui:arrow-filled" class="text-2xl rotate-90 duration-200" :class="{ '!-rotate-90': openedFilter.includes('Year') }" />
+                        </button>
+                        <div v-if="openedFilter.includes('Year')" class="pl-2 space-y-1 border-b pb-2">
+                            <div v-for="[key, values] in Object.entries(getYear())" :key="key" class="flex items-center gap-x-2">
+                                <input :id="key" type="checkbox" :value="key" v-model="yearFilter">
+                                <label :for="key" class="text-sm">{{ key }} ({{ values }})</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
                         <button class="flex items-center justify-between w-full" @click="openFilter('Warranty')">
                             <span class="text-lg">Warranty</span>
                             <Icon name="weui:arrow-filled" class="text-2xl rotate-90 duration-200" :class="{ '!-rotate-90': openedFilter.includes('Warranty') }" />
@@ -76,20 +88,20 @@
                 <div v-if="filteredTires.length" class="w-full grid grid-cols-2 lg:grid-cols-3 gap-5">
                     <div v-for="tire in filteredTires" :key="tire.id" class="border rounded-md hover:shadow-md cursor-pointer p-5 space-y-5">
                         <NuxtImg :src="tire.imageUrl" alt="tire" class="w-full" format="webp" densities="x1" />
-                        <div class="flex flex-col gap-y-3">
+                        <div class="flex flex-col just gap-y-3">
                             <div>
                                 <NuxtImg :src="`/brands/${tire.brand}.png`" format="webp" width="100px" class="rounded-sm mx-auto" />
                                 <h2 class="text-center font-semibold uppercase tracking-wide line-clamp-1">{{ tire.name }}</h2>
                             </div>
-                            <p class="text-gray-500 text-center text-sm line-clamp-3">{{ tire.description }}</p>
+                            <p class="text-gray-500 text-center line-clamp-3">{{ tire.size }}</p>
                             <div class="flex justify-end">
                                 <NuxtLink :to="`/tires/${tire.id}`" class="text-sm bg-blueberry text-white px-3 rounded py-1 hover:bg-blue-700">More Details</NuxtLink>
                             </div>
                         </div>
                     </div>
-
-                    <button v-if="itemsShowing < filteredTires" class="mx-auto w-fit bg-blueberry rounded-full py-1 px-3 text-white hover:bg-blue-700 col-span-2 lg:col-span-3" @click="showMore">Show more</button>
-                    <button v-else class="mx-auto w-fit bg-blueberry rounded-full py-1 px-3 text-white hover:bg-blue-700 col-span-2 lg:col-span-3" @click="showLess">Show Less</button>
+                    {{  }}
+                    <button v-if="totalItems > filteredTires.length" class="mx-auto w-fit bg-blueberry rounded-full py-1 px-3 text-white hover:bg-blue-700 col-span-2 lg:col-span-3" @click="showMore">Show more</button>
+                    <p v-else class="text-center col-span-3 uppercase font-semibold tracking-wide">End of lists</p>
                 </div>
                 <div v-else class="">
                     <h1 class="text-center text-lg uppercase mt-10 font-semibold tracking-wide">No results</h1>
@@ -156,14 +168,17 @@ const searchQuery = ref('');
 const brandFilter = ref([]);
 const sizeFilter = ref([]);
 const originFilter = ref([]);
+const yearFilter = ref([]);
 const warrantyFilter = ref([]);
 
 const itemsShowing = ref(6)
+const totalItems = ref('')
 
 const filteredTires = computed(() => {
     const searchQueryLower = searchQuery.value.toLowerCase();
 
-    if (!searchQuery.value && brandFilter.value.length === 0 && sizeFilter.value.length === 0 && originFilter.value.length === 0 && warrantyFilter.value.length === 0) {
+    if (!searchQuery.value && brandFilter.value.length === 0 && sizeFilter.value.length === 0 && originFilter.value.length === 0 && warrantyFilter.value.length === 0 && yearFilter.value.length === 0) {
+        totalItems.value = tires.value.length
         return tires.value.slice(0, itemsShowing.value);
     }
 
@@ -188,23 +203,24 @@ const filteredTires = computed(() => {
             ? originFilter.value.includes(tire.origin)
             : true;
 
+        const matchesYearFilter = yearFilter.value.length > 0
+            ? yearFilter.value.includes(tire.year)
+            : true;
+
         const matchesWarrantyFilter = warrantyFilter.value.length > 0
             ? warrantyFilter.value.includes(tire.warranty)
             : true;
 
-        return matchesSearchQuery && matchesBrandFilter && matchesSizeFilter && matchesOriginFilter && matchesWarrantyFilter;
+        return matchesSearchQuery && matchesBrandFilter && matchesSizeFilter && matchesOriginFilter && matchesWarrantyFilter && matchesYearFilter;
     });
 
+    totalItems.value = filteredLists.length
     return filteredLists.slice(0, itemsShowing.value)
 });
 
 
 const showMore = () => {
     itemsShowing.value += 6
-}
-
-const showLess = () => {
-    itemsShowing.value -= 6
 }
 
 const countBrand = (brand) => {
@@ -234,11 +250,27 @@ const getTireOrigin = () => {
         if(tireOrigins[tire.origin]){
             tireOrigins[tire.origin]++
         }else{
-            tireOrigins[tire.origin] = 1
+            if(tire.origin){
+                tireOrigins[tire.origin] = 1
+            }
         }
      }
 
      return tireOrigins
+}
+
+const getYear = () => {
+    let tireYear = {}
+
+    for(let tire of tires.value){
+        if(tireYear[tire.year]){
+            tireYear[tire.year]++
+        }else{
+            tireYear[tire.year] = 1
+        }
+    }
+    
+    return tireYear
 }
 
 const getTireWarranty = () => {
