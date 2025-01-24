@@ -62,9 +62,8 @@
                             </div>
                         </div>
                     </div>
-
                     <button  v-if="totalItems > filteredBatteries.length" class="mx-auto w-fit bg-blueberry rounded-full py-1 px-3 text-white hover:bg-blue-700 col-span-2 lg:col-span-3" @click="showMore">Show more</button>
-                    <p v-else class="text-center col-span-3 uppercase font-semibold tracking-wide">End of lists</p>
+                    <p v-else class="text-center col-span-2 lg:col-span-3 uppercase font-semibold tracking-wide">End of lists</p>
                 </div>
                 <div v-else class="">
                     <h1 class="text-center text-lg uppercase mt-10 font-semibold tracking-wide">No results</h1>
