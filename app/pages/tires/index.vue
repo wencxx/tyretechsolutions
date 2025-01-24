@@ -150,6 +150,10 @@ const tires = computed(() => tireStore.tires)
 
 onMounted(() => {
     getTires()
+
+    if(query.size){
+        sizeFilter.value.push(query.size)
+    }
 })
 
 const loading = ref(false)
@@ -167,7 +171,7 @@ const getTires = async () => {
 
 const searchQuery = ref('');
 const brandFilter = ref([]);
-const sizeFilter = ref([query.size]);
+const sizeFilter = ref([]);
 const originFilter = ref([]);
 const yearFilter = ref([]);
 const warrantyFilter = ref([]);
