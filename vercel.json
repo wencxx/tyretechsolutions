@@ -1,10 +1,9 @@
 {
-  "version": 3,
+  "version": 2,
   "builds": [
     {
       "src": "nuxt.config.*",
-      "use": "@vercel/node",
-      "config": { "zeroConfig": true }
+      "use": "@vercel/node"
     },
     {
       "src": ".output/public/**",
@@ -13,7 +12,7 @@
   ],
   "routes": [
     {
-      "src": "/.*",
+      "src": "/(.*)",
       "dest": ".output/server/index.mjs"
     }
   ]
