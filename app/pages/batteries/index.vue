@@ -10,7 +10,7 @@
         </div>
         <!-- filter in mobile -->
         <div class="flex justify-end lg:hidden">
-            <button class="flex items-center gap-x-2 border rounded px-3">
+            <button class="flex items-center gap-x-2 border rounded px-3" @click="openSideFilter = true">
                 <span class="text-lg font-semibold tracking-wide">Filter</span>
                 <Icon name="uil:filter" class="text-2xl" />
             </button>
@@ -42,6 +42,38 @@
                             <div v-for="[key, values] in Object.entries(getBatteryWarranty())" :key="key" class="flex items-center gap-x-2">
                                 <input :id="key" type="checkbox" :value="key" v-model="warrantyFilter">
                                 <label :for="key" class="text-sm">{{ key }} ({{ values }})</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- filter options in mobile -->
+            <div v-if="openSideFilter" @click.self="openSideFilter = false" class="block lg:hidden fixed top-0 left-0 w-screen h-screen">
+                <div class="-translate-x-full flex flex-col gap-y-5 w-2/3 md:w-2/5 h-full bg-white pt-[14dvh] px-5 overflow-y-auto " :class="{ '!translate-x-0': openSideFilter }">
+                    <h1 class="text-lg font-semibold tracking-wide">Filter Options</h1>
+                    <div class="space-y-2">
+                        <div>
+                            <button class="flex items-center justify-between w-full" @click="openFilter('Brands')">
+                                <span class="text-lg">Brands</span>
+                                <Icon name="weui:arrow-filled" class="text-2xl rotate-90 duration-200" :class="{ '!-rotate-90': openedFilter.includes('Brands') }" />
+                            </button>
+                            <div v-if="openedFilter.includes('Brands')" class="pl-2 space-y-1 border-b pb-2">
+                                <div v-for="brand in brands" :key="brand" class="flex items-center gap-x-2">
+                                    <input :id="brand" type="checkbox" :value="brand" v-model="brandFilter">
+                                    <label :for="brand" class="text-sm capitalize">{{ brand }} <span>({{ countBrand(brand) }})</span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="flex items-center justify-between w-full" @click="openFilter('Warranty')">
+                                <span class="text-lg">Warranty</span>
+                                <Icon name="weui:arrow-filled" class="text-2xl rotate-90 duration-200" :class="{ '!-rotate-90': openedFilter.includes('Warranty') }" />
+                            </button>
+                            <div v-if="openedFilter.includes('Warranty')" class="pl-2 space-y-1 border-b pb-2">
+                                <div v-for="[key, values] in Object.entries(getBatteryWarranty())" :key="key" class="flex items-center gap-x-2">
+                                    <input :id="key" type="checkbox" :value="key" v-model="warrantyFilter">
+                                    <label :for="key" class="text-sm">{{ key }} ({{ values }})</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -103,6 +135,8 @@ const openFilter = (filter) => {
         openedFilter.value.push(filter)
     }
 }
+
+const openSideFilter = ref(false)
 
 const brands = ['amaron', 'ac delco', 'solite', 'varta']
 
