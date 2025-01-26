@@ -158,7 +158,7 @@
                         <NuxtImg :src="tire.imageUrl" alt="tire" class="w-full" format="webp" densities="x1" />
                         <div class="flex flex-col just gap-y-3">
                             <div>
-                                <NuxtImg :src="`/brands/${tire.brand}.png`" format="webp" width="100px" class="rounded-sm mx-auto" />
+                                <NuxtImg :src="`/brands/${tire.brand}.png`" alt="brand" format="webp" densities="x1" width="100px" class="rounded-sm mx-auto" />
                                 <h2 class="text-center font-semibold uppercase tracking-wide line-clamp-1">{{ tire.name }}</h2>
                             </div>
                             <p class="text-gray-500 text-center line-clamp-3">{{ tire.size }}</p>

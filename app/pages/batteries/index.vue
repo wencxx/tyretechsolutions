@@ -86,7 +86,7 @@
                         <NuxtImg :src="battery.imageUrl" alt="battery" class="w-full aspect-square" format="webp" densities="x1" />
                         <div class="flex flex-col gap-y-3 justify-between ">
                             <div>
-                                <NuxtImg :src="`/brands/${battery.brand}.png`" format="webp" width="100px" class="rounded-sm mx-auto" />
+                                <NuxtImg :src="`/brands/${battery.brand}.png`" densities="x1" format="webp" width="100px" class="rounded-sm mx-auto" />
                                 <h2 class="text-center font-semibold uppercase tracking-wide line-clamp-1">{{ battery.name }}</h2>
                             </div>
                             <div class="flex justify-end">
